@@ -6,7 +6,7 @@ Simple WebPing API
 
 `/ping/:host?port=:port`
 
-```json
+```
 {
   "status": true, // true or false
   "result": {
