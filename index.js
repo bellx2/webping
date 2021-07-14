@@ -5,6 +5,8 @@ const port = process.env.PORT || 3000
 const ping = require('ping')
 const tcpp = require('tcp-ping')
 
+app.use(express.static('public'))
+
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })

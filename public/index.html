@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+    />
+  </head>
+  <body>
+    <div id="app">
+      <el-container>
+        <el-main>
+          <h1>WebPing Demo</h1>
+          <el-form ref="form" :model="form" label-width="120px">
+            <el-form-item label="Host">
+              <el-input type="text" v-model="host"></el-input>
+            </el-form-item>
+            <el-form-item label="Port">
+              <el-input type="text" v-model="port"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button @click="doPing">Ping</el-button>
+            </el-form-item>
+            <hr />
+            <p>{{ ping_data.status }}</p>
+            <p>{{ ping_data.result }}</p>
+          </el-form>
+        </el-main>
+      </el-container>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script>
+      new Vue({
+        el: '#app',
+        data: {
+          ping_data: {},
+          host: '8.8.8.8',
+          port: ''
+        },
+        methods: {
+          doPing() {
+            fetch(`/ping/${this.host}?port=${this.port}`)
+              .then((res) => res.json())
+              .then((data) => {
+                this.ping_data = data
+              })
+          }
+        },
+        mounted() {
+          //表示後にやりたいことはここに書ける
+        }
+      })
+    </script>
+  </body>
+</html>
