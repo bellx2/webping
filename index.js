@@ -9,12 +9,12 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.get('/ping/:ip', (req, res) => {
-  const ip = req.params.ip
+app.get('/ping/:host', (req, res) => {
+  const host = req.params.host
   const port = req.query.port
   if (port) {
     tcpp.ping(
-      { address: ip, port: port, timeout: 500, attempts: 1 },
+      { address: host, port: port, timeout: 500, attempts: 1 },
       (err, result) => {
         console.log(result)
         res.json({
@@ -28,7 +28,7 @@ app.get('/ping/:ip', (req, res) => {
       }
     )
   } else {
-    ping.promise.probe(ip, { timeout: 1 }).then(function (isAlive) {
+    ping.promise.probe(host, { timeout: 1 }).then(function (isAlive) {
       console.log(isAlive)
       res.json({
         status: isAlive.alive,
