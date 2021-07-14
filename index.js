@@ -16,16 +16,28 @@ app.get('/ping/:ip', (req, res) => {
     tcpp.ping(
       { address: ip, port: port, timeout: 500, attempts: 1 },
       (err, result) => {
-        if (result.avg) {
-          res.json({ status: true, result: result })
-        } else {
-          res.json({ status: false, result: result })
-        }
+        console.log(result)
+        res.json({
+          status: result.avg ? true : false,
+          result: {
+            host: result.address,
+            avg: result.avg,
+            port: result.port
+          }
+        })
       }
     )
   } else {
     ping.promise.probe(ip, { timeout: 1 }).then(function (isAlive) {
-      res.json({ status: isAlive.alive, result: isAlive })
+      console.log(isAlive)
+      res.json({
+        status: isAlive.alive,
+        result: {
+          host: isAlive.host,
+          port: 'ICMP',
+          avg: isAlive.avg == 'unknown' ? null : Number(isAlive.avg)
+        }
+      })
     })
   }
 })
