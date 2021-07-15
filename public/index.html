@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+    />
+  </head>
+  <body>
+    <div id="app">
+      <el-container>
+        <el-header style="text-align: left; font-size: 12px">
+          <h1>WebPing DemoUI</h1>
+        </el-header>
+        <el-main>
+          <el-form label-width="120px">
+            <el-form-item label="Host">
+              <el-input type="text" v-model="host"></el-input>
+            </el-form-item>
+            <el-form-item label="Port">
+              <el-input type="text" v-model="port"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="normal" @click="doPing">Ping</el-button>
+            </el-form-item>
+            <hr />
+            <el-form-item label="Status">
+              <el-button
+                round
+                type="success"
+                v-if="result_data['status'] == 'OK'"
+                >OK</el-button
+              >
+              <el-button
+                round
+                type="danger"
+                v-if="result_data['status'] == 'NG'"
+                >NG</el-button
+              >
+              <el-button round v-if="!result_data['status']">N/A</el-button>
+            </el-form-item>
+            <el-form-item label="Result">
+              <el-input type="textarea" v-model="result_text"> </el-input>
+            </el-form-item>
+          </el-form>
+        </el-main>
+      </el-container>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script>
+      new Vue({
+        el: '#app',
+        data: {
+          result_data: {},
+          result_text: '',
+          host: '8.8.8.8',
+          port: ''
+        },
+        methods: {
+          doPing() {
+            fetch(`/ping/${this.host}?port=${this.port}`)
+              .then((res) => res.json())
+              .then((data) => {
+                this.result_data = data
+                this.result_text = JSON.stringify(data)
+              })
+          }
+        }
+      })
+    </script>
+  </body>
+</html>

@@ -6,9 +6,9 @@ Simple WebPing API
 
 `/ping/:host?port=:port`
 
-```
+```json
 {
-  "status": true, // true or false
+  "status": "OK", // "OK" or "NG"
   "result": {
     "host": "8.8.8.8",
     "avg": 11.071, // average ping time
