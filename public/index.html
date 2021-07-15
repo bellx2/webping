@@ -9,9 +9,11 @@
   <body>
     <div id="app">
       <el-container>
+        <el-header style="text-align: left; font-size: 12px">
+          <h1>WebPing DemoUI</h1>
+        </el-header>
         <el-main>
-          <h1>WebPing Demo</h1>
-          <el-form ref="form" :model="form" label-width="120px">
+          <el-form label-width="120px">
             <el-form-item label="Host">
               <el-input type="text" v-model="host"></el-input>
             </el-form-item>
@@ -19,11 +21,27 @@
               <el-input type="text" v-model="port"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button @click="doPing">Ping</el-button>
+              <el-button type="normal" @click="doPing">Ping</el-button>
             </el-form-item>
             <hr />
-            <p>{{ ping_data.status }}</p>
-            <p>{{ ping_data.result }}</p>
+            <el-form-item label="Status">
+              <el-button
+                round
+                type="success"
+                v-if="result_data['status'] == 'OK'"
+                >OK</el-button
+              >
+              <el-button
+                round
+                type="danger"
+                v-if="result_data['status'] == 'NG'"
+                >NG</el-button
+              >
+              <el-button round v-if="!result_data['status']">N/A</el-button>
+            </el-form-item>
+            <el-form-item label="Result">
+              <el-input type="textarea" v-model="result_text"> </el-input>
+            </el-form-item>
           </el-form>
         </el-main>
       </el-container>
@@ -34,7 +52,8 @@
       new Vue({
         el: '#app',
         data: {
-          ping_data: {},
+          result_data: {},
+          result_text: '',
           host: '8.8.8.8',
           port: ''
         },
@@ -43,12 +62,10 @@
             fetch(`/ping/${this.host}?port=${this.port}`)
               .then((res) => res.json())
               .then((data) => {
-                this.ping_data = data
+                this.result_data = data
+                this.result_text = JSON.stringify(data)
               })
           }
-        },
-        mounted() {
-          //表示後にやりたいことはここに書ける
         }
       })
     </script>
